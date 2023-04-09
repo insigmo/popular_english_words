@@ -7,8 +7,9 @@ Telegram бот для запоминания популярных англий�
 Использование с Docker показано ниже. Предварительно заполните ENV переменные, указанные выше, в Dockerfile
 
 ```
+mkdir -p /etc/telegram/bot/api
 docker build -t popular_english_words ./
-docker run -d --name popular_english_words -p 8080:8080 popular_english_words
+docker run -d --name popular_english_words -p 8081:8081 -v tg-bot-api-data:/etc/telegram/bot/api popular_english_words
 ```
 
 Чтобы войти в работающий контейнер:

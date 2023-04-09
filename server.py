@@ -37,7 +37,7 @@ async def send_words(message: types.Message):
     while True:
         today = start_time + timedelta(days=1)
         await sleep(60 * 60 * 61)
-        if today.strftime("%H") >= "10":
+        if "10" <= today.strftime("%H") <= "11":
             known_words = await _get_known_words()
             if message.from_user.id not in known_words:
                 await _add_user(message.from_user.id)
