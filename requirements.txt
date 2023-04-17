@@ -1,2 +1,6 @@
 aiogram
 aiofiles
+asyncpg
+brotli
+environs
+sqlalchemy[asyncio]

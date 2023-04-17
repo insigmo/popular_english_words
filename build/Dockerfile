@@ -11,8 +11,6 @@ RUN adduser $USER -h $HOME -S -D
 USER $USER
 WORKDIR $HOME
 
-ENV TELEGRAM_API_TOKEN=""
-
 COPY ./ ./
 RUN pip install --upgrade pip && pip install -r requirements.txt --no-warn-script-location
 

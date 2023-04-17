@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  bot:
+    network_mode: bridge
+    restart: always
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
+    env_file:
+      - ./dev.env
+    links:
+      - postgres_db
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    restart: always
+    network_mode: bridge
+    image: postgres:alpine
+    user: postgres
+    ports:
+     - "5432:5432"
+
+    env_file:
+      - ./dev.env

@@ -4,3 +4,4 @@
 *.pickle
 *.pid
 *.out
+*.db
