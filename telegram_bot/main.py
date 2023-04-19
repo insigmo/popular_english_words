@@ -40,7 +40,7 @@ async def go_study(message: types.Message) -> None:
 async def add_user(message: Message):
     words_count = int(re.match(r'\w{1,2}', message.text).group())
     message.from_user.values['words_count'] = words_count
-    message.from_user.values['what_hour'] = 13
+    message.from_user.values['what_hour'] = 9
 
     await db_add_user(message.from_user.values)
     await message.answer(f'Вы были подписаны на ежедневные изучение популярных английских слов. \n'

@@ -43,8 +43,8 @@ async def job():
     while True:
         start_time = datetime.now()
         today = start_time + timedelta(days=1)
-        # await sleep(60 * 61)
-        await sleep(3)
+        await sleep(60 * 61)
+
         users = await db_add_users()
         for user in users:
             if user.what_hour == int(today.strftime("%H")):
