@@ -4,7 +4,7 @@ from sqlalchemy import Result, select, update
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from db.compressor import Compressor
-from db.tables import KnownWords, User
+from db.tables import KnownWords, User, Base
 from variables import Vars
 
 cmp = Compressor()
@@ -16,7 +16,13 @@ class DBManager:
         url = f"postgresql+asyncpg://{v.postgres_user}:{v.postgres_password}@{v.postgres_host}:{v.postgres_port}"
         self._engine = create_async_engine(url, echo=True, )
         self._a_session = async_sessionmaker(self._engine, expire_on_commit=False)
+        await self._init_models()
         return self
+
+    async def _init_models(self):
+        async with self._engine.begin() as conn:
+            # await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.create_all)
 
     async def __aexit__(self, *args, **kwargs):
         await self._engine.dispose()
@@ -35,6 +41,9 @@ class DBManager:
     async def add_user(self, user: dict) -> None:
         async with self._a_session() as session:
             if await self.get_user_by_user_id(user['id']):
+                stmt = update(User).where(User.id == user['id']).values(**user)
+                await session.execute(stmt)
+                await session.commit()
                 return
 
             user_table = User(**user)
@@ -47,7 +56,7 @@ class DBManager:
 
     async def get_known_words_by_user_id(self, user_id: int) -> Result:
         async with self._a_session() as session:
-            statement = select(KnownWords).where(KnownWords.user_id == user_id)
+            statement = select(KnownWords).where(KnownWords.user_id == user_id)   # type: ignore
             result = (await session.execute(statement)).scalar()
             return cmp.decompress(result.words)
 
@@ -56,16 +65,24 @@ class DBManager:
             result = await session.get(User, user_id)
             return result
 
-    async def get_all_users(self) -> list[User]:
+    async def get_all_users(self) -> list[User]:  # type: ignore
         async with self._a_session() as session:
             result = await session.execute(select(User))
-            return result.scalars().all()
+            return result.scalars().all()    # type: ignore
 
 
 async def main():
     async with DBManager() as manager:
-        user_values = {'first_name': 'Beta', 'id': 161533572, 'is_bot': False, 'language_code': 'en', 'username': 'insigmo'}
-        # user_values2 = {'first_name': 'Beta', 'id': 161533571, 'is_bot': False, 'language_code': 'en', 'username': 'insigmo1'}
+        user_values = {
+            'first_name': 'b',
+            'id': 161533571,
+            'is_bot': False,
+            'language_code': 'en',
+            'words_count': 10,
+            'what_hour': 9,
+            'username': 'igmo'
+        }
+
         known_words = {
             "the": "определенный артикль",
             "be": "быть, нужно, будь",
@@ -74,10 +91,9 @@ async def main():
             "a/an": "неопределённый артикль"
         }
         await manager.add_user(user_values)
-        # await manager.add_user(user_values2)
-        # await manager.update_known_words(user_values['id'], known_words)
+        await manager.update_known_words(user_values['id'], known_words)
         print(await manager.get_all_users())
-        # print(await manager.get_known_words_by_user_id(user_values['id']))
+        print(await manager.get_known_words_by_user_id(user_values['id']))
 
 
 if __name__ == '__main__':

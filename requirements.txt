@@ -1,6 +1,9 @@
-aiogram
+aiogram~=2.25.1
+apscheduler
 aiofiles
 asyncpg
-brotli
-environs
-sqlalchemy[asyncio]
+brotli~=1.0.9
+environs~=9.5.0
+sqlalchemy[asyncio]~=2.0.9
+supervisor
+uvloop~=0.17.0
