@@ -43,7 +43,7 @@ async def add_user(message: Message):
     message.from_user.values['what_hour'] = 9
 
     await db_add_user(message.from_user.values)
-    await message.answer(f'Вы были подписаны на ежедневные изучение популярных английских слов. \n'
+    await message.answer(f'Вы были подписаны на ежедневные изучения популярных английских слов. \n'
                          f'Каждый день в 9 утра вы будете получать по {words_count} слов. \n'
                          f'Удачи и да прибудет с вами английский язык!')
 
