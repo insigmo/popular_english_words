@@ -1,19 +1,14 @@
 Telegram бот для запоминания популярных английских слов. 
 Тут указано около 3000 наиболее популярных слов английского языка
-В переменных окружения надо проставить API токен бота.
 
+Для запуска необходимо создать файл build/dev.env и за основу необходимо брать файл build/.env
+Там необходимо поменять 3 переменных
 `TELEGRAM_API_TOKEN` — API токен бота
+`POSTGRES_USER` — Пользователь бд постгри
+`POSTGRES_PASSWORD` — Пароль пользователь бд постгри
 
-Использование с Docker показано ниже. Предварительно заполните ENV переменные, указанные выше, в Dockerfile
-
+Запускаем с помощью docker compose
 ```
-mkdir -p /etc/telegram/bot/api
-docker build -t popular_english_words ./
-docker run -d --name popular_english_words -p 8081:8081 -v tg-bot-api-data:/etc/telegram/bot/api popular_english_words
-```
-
-Чтобы войти в работающий контейнер:
-
-```
-docker exec -it popular_english_words bash
+cd build/
+docker-compose up -d
 ```
