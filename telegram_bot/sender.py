@@ -4,7 +4,7 @@ import logging
 import os.path
 import textwrap
 from asyncio import sleep
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import uvloop
 from db.tables import User
@@ -42,13 +42,13 @@ async def _send_message(user: User):
 async def job():
     while True:
         start_time = datetime.now()
-        today = start_time + timedelta(days=1)
-        await sleep(60 * 61)
-
         users = await db_add_users()
         for user in users:
-            if user.what_hour == int(today.strftime("%H")):
+            if user.what_hour == int(start_time.strftime("%H")):
                 await _send_message(user)
+            else:
+                await sleep(60 * 60)
+
 
 if __name__ == '__main__':
     uvloop.install()
