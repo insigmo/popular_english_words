@@ -11,6 +11,7 @@ class User(Base):
     username = Column(String(250), nullable=True)
     is_bot = Column(Boolean, default=False)
     language_code = Column(String(20))
+    enable = Column(Boolean, default=True, nullable=False)
     words_count = Column(SmallInteger, default=10)
     what_hour = Column(SmallInteger, default=10)
 

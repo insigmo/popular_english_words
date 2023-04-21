@@ -28,12 +28,23 @@ async def go_study(message: types.Message) -> None:
     keyboard.add(*buttons)
 
     await message.answer(textwrap.dedent(
-        '''Вам нужно будет выбрать количество слов, сколько будете изучать каждый день.'
+        '''
+        Вам нужно будет выбрать количество слов, сколько будете изучать каждый день
              10 слов -- easy
              15 слов -- medium
              20 слов -- hard
-           Количество слов можно поменять в любое время через /go_study
-           Пожалуйста напишите сколько слов вы хотели бы изучить? (пример -- 10)'''))
+        Количество слов можно поменять в любое время через /go_study
+        Пожалуйста напишите сколько слов вы хотели бы изучить? (пример -- 10)
+        '''))
+
+
+@dp.message_handler(commands=['unsubscribe'])
+async def unsubscribe(message: types.Message) -> None:
+    message.from_user.values['enable'] = False
+    await db_add_user(message.from_user.values)
+
+    await message.answer('Вы были отписаны от ежедневного обучения слов. \n'
+                         'Для возобновления нажмите или введите /go_study')
 
 
 @dp.message_handler(Text(contains=""))
@@ -41,11 +52,11 @@ async def add_user(message: Message):
     words_count = int(re.match(r'\w{1,2}', message.text).group())
     message.from_user.values['words_count'] = words_count
     message.from_user.values['what_hour'] = 9
+    message.from_user.values['enable'] = True
 
     await db_add_user(message.from_user.values)
-    await message.answer(f'Вы были подписаны на ежедневное обучение наиболее используемых английских слов. \n'
-                         f'Каждый день в 9 утра вы будете получать по {words_count} слов. \n'
-                         f'Удачи и да прибудет с вами английский язык!')
+    await message.answer('Вы были подписаны на ежедневное обучение наиболее используемых английских слов. \n'
+                         f'Каждый день в 9 утра вы будете получать по {words_count} слов. \nУдачи!')
 
 
 @dp.message_handler()
@@ -55,6 +66,7 @@ async def echo_message(msg: types.Message):
         Не знаю такой команды. Вам доступны только следующие:
             /start
             /go_study
+            /unsubscribe
             /help
         """)
     )
