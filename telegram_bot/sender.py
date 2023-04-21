@@ -3,7 +3,6 @@ import json
 import logging
 import os.path
 import textwrap
-from asyncio import sleep
 from datetime import datetime
 
 import uvloop
@@ -39,17 +38,12 @@ async def _send_message(user: User):
     await bot.send_message(user.id, textwrap.dedent(msg))
 
 
-async def job():
-    while True:
-        start_time = datetime.now()
-        users = await db_add_users()
-        for user in users:
-            if user.what_hour == int(start_time.strftime("%H")):
-                await _send_message(user)
-            else:
-                await sleep(60 * 60)
+async def main():
+    users = await db_add_users()
+    for user in users:
+        await _send_message(user)
 
 
 if __name__ == '__main__':
     uvloop.install()
-    asyncio.run(job())
+    asyncio.run(main())

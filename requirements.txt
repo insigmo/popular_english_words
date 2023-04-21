@@ -1,9 +1,9 @@
 aiogram~=2.25.1
-apscheduler
-aiofiles
-asyncpg
+aiofiles~=23.1.0
+asyncpg~=0.27.0
 brotli~=1.0.9
 environs~=9.5.0
+python-crontab~=2.7.1
 sqlalchemy[asyncio]~=2.0.9
-supervisor
+supervisor~=4.2.5
 uvloop~=0.17.0

@@ -19,4 +19,6 @@ RUN pip install --upgrade pip  --no-warn-script-location && pip install -r requi
 COPY build/supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 RUN echo_supervisord_conf >> /etc/supervisor/supervisord.conf
 
+RUN python /app/build/set_crontab.py
+
 ENTRYPOINT ["supervisord", "--nodaemon"]
