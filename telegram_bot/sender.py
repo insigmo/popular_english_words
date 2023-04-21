@@ -41,7 +41,8 @@ async def _send_message(user: User):
 async def main():
     users = await db_add_users()
     for user in users:
-        await _send_message(user)
+        if user.enable:
+            await _send_message(user)
 
 
 if __name__ == '__main__':
