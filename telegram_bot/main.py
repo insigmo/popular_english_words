@@ -79,4 +79,4 @@ async def shutdown(dispatcher: Dispatcher):
 
 if __name__ == '__main__':
     uvloop.install()
-    executor.start_polling(dp, skip_updates=True, on_shutdown=shutdown)
+    executor.start_polling(dp, skip_updates=False, on_shutdown=shutdown)
