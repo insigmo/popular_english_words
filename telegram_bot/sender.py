@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 root_dir = os.path.dirname(os.path.dirname(__file__))
 
 
-with open(os.path.join(root_dir, 'telegram_bot/all_words.json')) as f:
+with open(os.path.join(root_dir, 'all_words.json')) as f:
     all_words = json.load(f)
 
 
