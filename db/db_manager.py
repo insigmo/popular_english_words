@@ -4,7 +4,7 @@ from sqlalchemy import Result, select, update
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from db.compressor import Compressor
-from db.tables import KnownWords, User, Base
+from db.tables import Base, KnownWords, User
 from variables import Vars
 
 cmp = Compressor()
@@ -65,7 +65,7 @@ class DBManager:
             result = await session.get(User, user_id)
             return result
 
-    async def get_all_users(self) -> list[User]:  # type: ignore
+    async def get_all_users(self) -> list[User]:
         async with self._a_session() as session:
             result = await session.execute(select(User))
             return result.scalars().all()    # type: ignore

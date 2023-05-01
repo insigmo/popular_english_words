@@ -12,10 +12,9 @@ from telegram_bot.vars import bot
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-root_dir = os.path.dirname(os.path.dirname(__file__))
 
-
-with open(os.path.join(root_dir, 'all_words.json')) as f:
+words_path = os.path.join(os.path.dirname(__file__), 'all_words.json')
+with open(words_path) as f:
     all_words = json.load(f)
 
 
