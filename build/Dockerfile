@@ -20,5 +20,6 @@ COPY build/supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 RUN echo_supervisord_conf >> /etc/supervisor/supervisord.conf
 
 RUN python /app/build/set_crontab.py
+RUN /usr/sbin/crond -f &
 
 ENTRYPOINT ["supervisord", "--nodaemon"]
