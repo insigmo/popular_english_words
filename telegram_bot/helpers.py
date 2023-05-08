@@ -2,12 +2,12 @@ from db.db_manager import DBManager
 from db.tables import User
 
 
-async def db_add_user(user: dict) -> None:
+async def db_add_or_update_user(user: dict) -> None:
     async with DBManager() as manager:
-        await manager.add_user(user)
+        await manager.add_or_update_user(user)
 
 
-async def db_add_users() -> list[User]:
+async def db_get_users() -> list[User]:
     async with DBManager() as manager:
         return await manager.get_all_users()
 

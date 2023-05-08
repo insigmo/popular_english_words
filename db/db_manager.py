@@ -38,7 +38,7 @@ class DBManager:
             await session.execute(stmt)
             await session.commit()
 
-    async def add_user(self, user: dict) -> None:
+    async def add_or_update_user(self, user: dict) -> None:
         async with self._a_session() as session:
             if await self.get_user_by_user_id(user['id']):
                 stmt = update(User).where(User.id == user['id']).values(**user)
@@ -90,7 +90,7 @@ async def main():
             "of": "показывает принадлежность",
             "a/an": "неопределённый артикль"
         }
-        await manager.add_user(user_values)
+        await manager.add_or_update_user(user_values)
         await manager.update_known_words(user_values['id'], known_words)
         print(await manager.get_all_users())
         print(await manager.get_known_words_by_user_id(user_values['id']))
