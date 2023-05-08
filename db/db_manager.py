@@ -45,7 +45,7 @@ class DBManager:
                 await session.execute(stmt)
                 await session.commit()
                 return
-            user.pop('last_name')
+            user.pop('last_name', None)
             user_table = User(**user)
             session.add(user_table)
             await session.commit()
