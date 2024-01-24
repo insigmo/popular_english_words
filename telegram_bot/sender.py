@@ -22,6 +22,12 @@ async def _send_message(user: User):
     user_known_words = await db_get_known_words(user.id) or {}
     words_for_knowing = list(set(all_words) - set(user_known_words))[:user.words_count]
     today_words = {}
+    if not words_for_knowing:
+        user.enable = False
+        await bot.send_message(user.id, textwrap.dedent('Thanks for studying the most popular words'
+                                                        'If you memorized all words, you can understand English speach'
+                                                        'Goodbye!'))
+        return
 
     for word in words_for_knowing:
         user_known_words[word] = all_words[word]
